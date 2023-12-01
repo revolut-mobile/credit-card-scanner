@@ -12,4 +12,12 @@ public struct CreditCardScannerError: LocalizedError {
     public var kind: Kind
     public var underlyingError: Error?
     public var errorDescription: String? { (underlyingError as? LocalizedError)?.errorDescription }
+
+    public init(
+        kind: Kind,
+        underlyingError: Error? = nil
+    ) {
+        self.kind = kind
+        self.underlyingError = underlyingError
+    }
 }
