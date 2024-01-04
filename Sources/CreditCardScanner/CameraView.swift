@@ -23,6 +23,8 @@ final class CameraView: UIView {
     private let maskLayerColor: UIColor
     private let maskLayerAlpha: CGFloat
 
+    let cardScanAnchorView = UIView()
+
     // MARK: - Capture related
 
     private let captureSessionQueue = DispatchQueue(
@@ -46,6 +48,8 @@ final class CameraView: UIView {
         self.maskLayerColor = maskLayerColor
         self.maskLayerAlpha = maskLayerAlpha
         super.init(frame: .zero)
+
+        setupCardScanAnchorView()
     }
 
     @available(*, unavailable)
@@ -140,6 +144,18 @@ final class CameraView: UIView {
         }
     }
 
+    func setupCardScanAnchorView() {
+        addSubview(cardScanAnchorView)
+        cardScanAnchorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            cardScanAnchorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            cardScanAnchorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            cardScanAnchorView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            cardScanAnchorView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: CreditCard.verticalShift),
+            cardScanAnchorView.heightAnchor.constraint(equalTo: cardScanAnchorView.widthAnchor, multiplier: CreditCard.heightRatioAgainstWidth)
+        ])
+    }
+
     func setupRegionOfInterest() {
         guard regionOfInterest == nil else { return }
         /// Mask layer that covering area around camera view
@@ -148,12 +164,12 @@ final class CameraView: UIView {
         backLayer.backgroundColor = maskLayerColor.withAlphaComponent(maskLayerAlpha).cgColor
 
         //  culcurate cutoutted frame
-        let cuttedWidth: CGFloat = bounds.width - 40.0
+        let cuttedWidth: CGFloat = bounds.width - 16.0 * 2
         let cuttedHeight: CGFloat = cuttedWidth * CreditCard.heightRatioAgainstWidth
 
         let centerVertical = (bounds.height / 2.0)
-        let cuttedY: CGFloat = centerVertical - (cuttedHeight / 2.0)
-        let cuttedX: CGFloat = 20.0
+        let cuttedY: CGFloat = centerVertical - (cuttedHeight / 2.0) + CreditCard.verticalShift
+        let cuttedX: CGFloat = 16.0
 
         let cuttedRect = CGRect(x: cuttedX,
                                 y: cuttedY,
@@ -226,4 +242,5 @@ extension CameraView: AVCaptureVideoDataOutputSampleBufferDelegate {
 extension CreditCard {
     // The aspect ratio of credit-card is Golden-ratio
     static let heightRatioAgainstWidth: CGFloat = 0.6180469716
+    static let verticalShift: CGFloat = -30
 }

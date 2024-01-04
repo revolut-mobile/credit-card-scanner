@@ -25,8 +25,8 @@ class ExampleResultViewController: UIViewController {
 //        vc.textBackgroundColor = .white
 
         let vc = CreditCardScannerViewController(delegate: self)
-        vc.modalPresentationStyle = .fullScreen
-        present(vc, animated: true, completion: nil)
+        let navigationController = UINavigationController(rootViewController: vc)
+        present(navigationController, animated: true, completion: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
