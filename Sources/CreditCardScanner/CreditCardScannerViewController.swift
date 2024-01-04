@@ -32,7 +32,10 @@ open class CreditCardScannerViewController: UIViewController {
     public var subtitleLabelText: String = "Line up card within the lines"
     public var cancelButtonTitleText: String = "Cancel"
     public var cancelButtonTitleTextColor: UIColor = .gray
-    public var labelTextColor: UIColor = .white
+    public var titleLabelFont: UIFont = .preferredFont(forTextStyle: .largeTitle)
+    public var titleLabelTextColor: UIColor = .white
+    public var subtitleLabelFont: UIFont = .preferredFont(forTextStyle: .title3)
+    public var subtitleLabelTextColor: UIColor = .white
     public var textBackgroundColor: UIColor = .black
     public var cameraViewCreditCardFrameStrokeColor: UIColor = .white
     public var cameraViewMaskLayerColor: UIColor = .black
@@ -109,7 +112,7 @@ private extension CreditCardScannerViewController {
             cameraView.topAnchor.constraint(equalTo: view.topAnchor),
             cameraView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             cameraView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            cameraView.heightAnchor.constraint(equalTo: cameraView.widthAnchor, multiplier: CreditCard.heightRatioAgainstWidth, constant: 100),
+            cameraView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -117,7 +120,7 @@ private extension CreditCardScannerViewController {
         NSLayoutConstraint.activate([
             bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomStackView.topAnchor.constraint(equalTo: cameraView.bottomAnchor),
+            bottomStackView.topAnchor.constraint(equalTo: cameraView.cardScanAnchorView.bottomAnchor, constant: 32),
         ])
 
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
@@ -129,7 +132,7 @@ private extension CreditCardScannerViewController {
         ])
 
         bottomStackView.axis = .vertical
-        bottomStackView.spacing = 16.0
+        bottomStackView.spacing = 8
         bottomStackView.isLayoutMarginsRelativeArrangement = true
         bottomStackView.distribution = .equalSpacing
         bottomStackView.directionalLayoutMargins = .init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
@@ -140,12 +143,12 @@ private extension CreditCardScannerViewController {
     func setupLabelsAndButtons() {
         titleLabel.text = titleLabelText
         titleLabel.textAlignment = .center
-        titleLabel.textColor = labelTextColor
-        titleLabel.font = .preferredFont(forTextStyle: .largeTitle)
+        titleLabel.textColor = titleLabelTextColor
+        titleLabel.font = titleLabelFont
         subtitleLabel.text = subtitleLabelText
         subtitleLabel.textAlignment = .center
-        subtitleLabel.font = .preferredFont(forTextStyle: .title3)
-        subtitleLabel.textColor = labelTextColor
+        subtitleLabel.font = subtitleLabelFont
+        subtitleLabel.textColor = subtitleLabelTextColor
         subtitleLabel.numberOfLines = 0
         cancelButton.setTitle(cancelButtonTitleText, for: .normal)
         cancelButton.setTitleColor(cancelButtonTitleTextColor, for: .normal)
